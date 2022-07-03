@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/feature/shared_module/page_header.dart';
+import 'package:movie_app/feature/shared_module/page_overview.dart';
 import 'package:movie_app/feature/tv_details_page/tv_details_bloc.dart';
 import 'package:movie_app/models/tv/TvOnAirModel.dart';
 import 'package:movie_app/movie_widgets/movie_widgets.dart';
-import 'package:movie_app/utils/movie_constants.dart';
 
 class TvDetailsView extends StatelessWidget {
   final Results tv;
@@ -30,35 +31,19 @@ class TvDetailsView extends StatelessWidget {
         builder: (context, state) {
           return CustomScrollView(
             slivers: <Widget>[
-              const SliverAppBar(pinned: true,),
-              SliverPadding(
-                padding: const EdgeInsets.all(20),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate(
-                    <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Image.network(
-                            tv.posterPath!,
-                            width: kDeviceLogicalWidth * 0.4,
-                          ),
-                          const SizedBox(width: 20,),
-                          Expanded(
-                            child: Column(
-                              children: <Widget>[
-                                Text(tv.name!),
-                                Text(tv.voteAverage!.toString()),
-                                Text('Votes ${tv.voteCount!}'),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 20,),
-                      Text(tv.overview!,),
-                    ],
-                  ),
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: MovieDetailsViewHeader(
+                  imagePath: tv.posterPath!,
+                  title: tv.name!,
                 ),
+              ),
+              ItemOverview(
+                title: tv.name!,
+                voteCount: tv.voteCount!.toString(),
+                voteAverage: tv.voteAverage!.toString(),
+                imagePath: tv.posterPath!,
+                overview: tv.overview!,
               ),
               if (state.tvDetailStatus == TvDetailStatus.loading)
                 const SliverToBoxAdapter(
@@ -69,17 +54,17 @@ class TvDetailsView extends StatelessWidget {
                   child: Center(child: Text('Empty')),
                 ),
               if (state.reviews != null)
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  childCount: state.reviews!.results!.length,
-                  (BuildContext context, int index) {
-                    return ListTile(
-                      title: Text(state.reviews!.results![index].author!),
-                      subtitle: Text(state.reviews!.results![index].content!),
-                    );
-                  },
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: state.reviews!.results!.length,
+                    (BuildContext context, int index) {
+                      return ListTile(
+                        title: Text(state.reviews!.results![index].author!),
+                        subtitle: Text(state.reviews!.results![index].content!),
+                      );
+                    },
+                  ),
                 ),
-              ),
             ],
           );
         },
