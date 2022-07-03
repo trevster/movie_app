@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:movie_app/feature/movie_bottom_navbar.dart';
+import 'package:movie_app/utils/movie_constants.dart';
 
 class MovieApp extends StatelessWidget {
   const MovieApp({Key? key}) : super(key: key);

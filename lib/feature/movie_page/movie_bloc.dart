@@ -27,7 +27,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     if (state.hasReachedMax) return;
 
     MovieRepository movieRepository = MovieRepository();
-    final ResponseModel responseModel = await movieRepository.nowPlaying(
+    final ResponseModel responseModel = await movieRepository.getNowPlaying(
       page: state.page,
     );
     if (responseModel.response?.statusCode == 200) {

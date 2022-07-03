@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/feature/movie_details_page/movie_details_view.dart';
 import 'package:movie_app/feature/movie_page/movie_bloc.dart';
 import 'package:movie_app/movie_widgets/movie_widgets.dart';
 
@@ -39,9 +40,10 @@ class MovieView extends StatelessWidget {
                   (BuildContext context, int index) {
                     return ListTile(
                       leading: Image.network(state.listResult[index].posterPath!),
-                      title: Text('Movie ${state.listResult[index].title}'),
-                      onTap: (){
-
+                      title: Text('${state.listResult[index].title}'),
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (_) => MovieDetailsView(movie: state.listResult[index])));
                       },
                     );
                   },

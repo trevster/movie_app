@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/feature/movie_page/movie_view.dart';
 import 'package:movie_app/feature/profile_page/profile_view.dart';
 import 'package:movie_app/feature/tv_page/tv_view.dart';
+import 'package:movie_app/utils/movie_constants.dart';
 
 
 class MovieBottomNavBar extends StatelessWidget{
@@ -10,6 +11,8 @@ class MovieBottomNavBar extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    kDeviceLogicalWidth = MediaQuery.of(context).size.width;
+    kDeviceLogicalHeight = MediaQuery.of(context).size.height;
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[
