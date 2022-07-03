@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/models/FailedRequestModel.dart';
-import 'package:movie_app/models/MovieDetailWithReviewsModel.dart';
+import 'package:movie_app/models/movie/FailedRequestModel.dart';
+import 'package:movie_app/models/movie/MovieDetailWithReviewsModel.dart';
 import 'package:movie_app/network/movie_network.dart';
 import 'package:movie_app/repository/movie_repository.dart';
 

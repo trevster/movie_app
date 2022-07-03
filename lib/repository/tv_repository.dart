@@ -1,19 +1,19 @@
 import 'package:http/http.dart';
 import 'package:http/retry.dart';
 import 'package:movie_app/models/movie/FailedRequestModel.dart';
-import 'package:movie_app/models/movie/MovieDetailWithReviewsModel.dart';
-import 'package:movie_app/models/movie/NowPlayingModel.dart';
+import 'package:movie_app/models/tv/TvDetailsWithReviewsModel.dart';
+import 'package:movie_app/models/tv/TvOnAirModel.dart';
 import 'package:movie_app/network/movie_network.dart';
 
-class MovieRepository {
-  Future<ResponseModel> getNowPlaying({
+class TvRepository {
+  Future<ResponseModel> getTvOnAir({
     required int page,
   }) async {
     final client = RetryClient(Client());
     Response response;
     dynamic decodedResponse;
     try {
-      final url = MovieNetwork.movieNowPlaying(page);
+      final url = MovieNetwork.tvOnTheAir(page);
       response = await client.get(url);
       decodedResponse = MovieNetwork.decodeResponse(response.bodyBytes);
     } finally {
@@ -25,20 +25,20 @@ class MovieRepository {
         response: response,
       );
     }
-    return ResponseModel<NowPlayingModel>(
-      decodedResponse: NowPlayingModel.fromJson(decodedResponse),
+    return ResponseModel<TvOnAirModel>(
+      decodedResponse: TvOnAirModel.fromJson(decodedResponse),
       response: response,
     );
   }
 
-  Future<ResponseModel> getMovieDetailWithReviews({
-    required int movieId,
+  Future<ResponseModel> getTvDetailWithReviews({
+    required int tvId,
   }) async {
     final client = RetryClient(Client());
     Response response;
     dynamic decodedResponse;
     try {
-      final url = MovieNetwork.movieDetailsWithReviews('$movieId');
+      final url = MovieNetwork.tvDetailsWithReviews('$tvId');
       response = await client.get(url);
       decodedResponse = MovieNetwork.decodeResponse(response.bodyBytes);
     } finally {
@@ -50,8 +50,8 @@ class MovieRepository {
         response: response,
       );
     }
-    return ResponseModel<MovieDetailWithReviewsModel>(
-      decodedResponse: MovieDetailWithReviewsModel.fromJson(decodedResponse),
+    return ResponseModel<TvDetailsWithReviewsModel>(
+      decodedResponse: TvDetailsWithReviewsModel.fromJson(decodedResponse),
       response: response,
     );
   }

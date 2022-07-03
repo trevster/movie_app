@@ -11,8 +11,12 @@ class MovieNetwork {
   static const imageHost = 'image.tmdb.org';
 
   static const _path3 = '3';
+
   static const _pathMovie = 'movie';
   static const _pathNowPlaying = 'now_playing';
+
+  static const _pathTv = 'tv';
+  static const _pathOnTheAir = 'on_the_air';
 
   static Uri _buildPath({required List<String> paths, Map<String, dynamic>? queryParameters}) {
     return Uri(
@@ -21,14 +25,6 @@ class MovieNetwork {
       pathSegments: [...paths],
       queryParameters: queryParameters,
     );
-  }
-
-  static Map<String, String> buildHeaders(Map<String, String>? additionalHeaders) {
-    final Map<String, String> defaultHeaders = {
-      'api_key': apiKeyV3,
-      'language': _defaultLanguage,
-    };
-    return defaultHeaders..addAll(additionalHeaders!);
   }
 
   static Map<String, dynamic> buildQueryParameters(Map<String, dynamic>? additionalParams) {
@@ -43,7 +39,9 @@ class MovieNetwork {
     return jsonDecode(utf8.decode(response!));
   }
 
-  static Uri nowPlaying(int page) {
+  /// Movie
+
+  static Uri movieNowPlaying(int page) {
     return _buildPath(
       paths: [_path3, _pathMovie, _pathNowPlaying],
       queryParameters: buildQueryParameters({
@@ -55,6 +53,26 @@ class MovieNetwork {
   static Uri movieDetailsWithReviews(String movieId,{List<String>? appendToResponse}) {
     return _buildPath(
       paths: [_path3, _pathMovie, movieId],
+      queryParameters: buildQueryParameters({
+        'append_to_response': ['reviews', ...?appendToResponse].join(','),
+      }),
+    );
+  }
+
+  /// Tv
+
+  static Uri tvOnTheAir(int page) {
+    return _buildPath(
+      paths: [_path3, _pathTv, _pathOnTheAir],
+      queryParameters: buildQueryParameters({
+        'page': '$page',
+      }),
+    );
+  }
+
+  static Uri tvDetailsWithReviews(String tvId,{List<String>? appendToResponse}) {
+    return _buildPath(
+      paths: [_path3, _pathTv, tvId],
       queryParameters: buildQueryParameters({
         'append_to_response': ['reviews', ...?appendToResponse].join(','),
       }),

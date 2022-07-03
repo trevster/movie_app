@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/feature/movie_details_page/movie_details_bloc.dart';
-import 'package:movie_app/models/movie/NowPlayingModel.dart';
+import 'package:movie_app/feature/tv_details_page/tv_details_bloc.dart';
+import 'package:movie_app/models/tv/TvOnAirModel.dart';
 import 'package:movie_app/movie_widgets/movie_widgets.dart';
 import 'package:movie_app/utils/movie_constants.dart';
 
-class MovieDetailsView extends StatelessWidget {
-  final Results movie;
+class TvDetailsView extends StatelessWidget {
+  final Results tv;
 
-  const MovieDetailsView({
+  const TvDetailsView({
     Key? key,
-    required this.movie,
+    required this.tv,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final MovieDetailsBloc movieDetailsBloc = MovieDetailsBloc()..add(GetMovieDetails(movie.id!));
+    final TvDetailsBloc tvDetailsBloc = TvDetailsBloc()..add(GetTvDetails(tv.id!));
     return MovieScaffold(
-      body: BlocConsumer<MovieDetailsBloc, MovieDetailsState>(
-        bloc: movieDetailsBloc,
+      body: BlocConsumer<TvDetailsBloc, TvDetailsState>(
+        bloc: tvDetailsBloc,
         listener: (context, state) {
-          if (state.movieDetailStatus == MovieDetailStatus.error) {
+          if (state.tvDetailStatus == TvDetailStatus.error) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
               backgroundColor: Colors.red.shade500,
@@ -39,32 +39,32 @@ class MovieDetailsView extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Image.network(
-                            movie.posterPath!,
+                            tv.posterPath!,
                             width: kDeviceLogicalWidth * 0.4,
                           ),
                           const SizedBox(width: 20,),
                           Expanded(
                             child: Column(
                               children: <Widget>[
-                                Text(movie.title!),
-                                Text(movie.voteAverage!.toString()),
-                                Text('Votes ${movie.voteCount!}'),
+                                Text(tv.name!),
+                                Text(tv.voteAverage!.toString()),
+                                Text('Votes ${tv.voteCount!}'),
                               ],
                             ),
                           )
                         ],
                       ),
                       const SizedBox(height: 20,),
-                      Text(movie.overview!,),
+                      Text(tv.overview!,),
                     ],
                   ),
                 ),
               ),
-              if (state.movieDetailStatus == MovieDetailStatus.loading)
+              if (state.tvDetailStatus == TvDetailStatus.loading)
                 const SliverToBoxAdapter(
                   child: Center(child: Text('Loading')),
                 ),
-              if (state.movieDetailStatus == MovieDetailStatus.empty)
+              if (state.tvDetailStatus == TvDetailStatus.empty)
                 const SliverToBoxAdapter(
                   child: Center(child: Text('Empty')),
                 ),
