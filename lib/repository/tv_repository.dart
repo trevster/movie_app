@@ -6,6 +6,7 @@ import 'package:movie_app/models/tv/TvOnAirModel.dart';
 import 'package:movie_app/network/movie_network.dart';
 
 class TvRepository {
+
   Future<ResponseModel> getTvOnAir({
     required int page,
   }) async {
@@ -14,6 +15,31 @@ class TvRepository {
     dynamic decodedResponse;
     try {
       final url = MovieNetwork.tvOnTheAir(page);
+      response = await client.get(url);
+      decodedResponse = MovieNetwork.decodeResponse(response.bodyBytes);
+    } finally {
+      client.close();
+    }
+    if(response.statusCode != 200) {
+      return ResponseModel<FailedRequestModel>(
+        decodedResponse: FailedRequestModel.fromJson(decodedResponse),
+        response: response,
+      );
+    }
+    return ResponseModel<TvOnAirModel>(
+      decodedResponse: TvOnAirModel.fromJson(decodedResponse),
+      response: response,
+    );
+  }
+
+  Future<ResponseModel> getTvPopular({
+    required int page,
+  }) async {
+    final client = RetryClient(Client());
+    Response response;
+    dynamic decodedResponse;
+    try {
+      final url = MovieNetwork.tvPopular(page);
       response = await client.get(url);
       decodedResponse = MovieNetwork.decodeResponse(response.bodyBytes);
     } finally {

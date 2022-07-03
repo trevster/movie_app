@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/feature/movie_details_page/movie_details_view.dart';
 import 'package:movie_app/feature/movie_page/movie_bloc.dart';
+import 'package:movie_app/feature/shared_module/page_header.dart';
 import 'package:movie_app/movie_widgets/movie_widgets.dart';
 
 class MovieView extends StatelessWidget {
@@ -103,38 +104,3 @@ class MovieView extends StatelessWidget {
   }
 }
 
-class SliverMovieHeader extends SliverPersistentHeaderDelegate {
-  final String? text;
-
-  SliverMovieHeader({this.text});
-
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      height: 70,
-      width: double.infinity,
-      color: Colors.lightBlue,
-      child: Center(
-        child: Text(
-          text ?? 'Now Playing',
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  double get maxExtent => kToolbarHeight;
-
-  @override
-  double get minExtent => kToolbarHeight;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
-  }
-}

@@ -11,15 +11,14 @@ part 'tv_state.dart';
 
 class TvBloc extends Bloc<TvEvent, TvState> {
   TvBloc() : super(const TvState()) {
-    on<GetTvOnAir>(_mapGetNowPlayingToState);
+    on<GetTvOnAir>(_mapGetTvOnAirToState);
+    on<GetTvPopular>(_mapGetTvPopularToState);
   }
 
-  _mapGetNowPlayingToState(GetTvOnAir event, Emitter<TvState> emit) async {
+  _mapGetTvOnAirToState(GetTvOnAir event, Emitter<TvState> emit) async {
     if (event.isRefresh) {
       emit(state.copyWith(
-        page: 1,
-        hasReachedMax: false,
-        listResult: <Results>[],
+        listTvOnAir: <Results>[],
       ));
     }
 
@@ -35,10 +34,39 @@ class TvBloc extends Bloc<TvEvent, TvState> {
         emit(state.copyWith(tvViewState: TvViewStatus.empty));
       }
       emit(state.copyWith(
-        listResult: tvOnAirModel.results,
+        listTvOnAir: tvOnAirModel.results,
         tvViewState: TvViewStatus.loaded,
-        page: state.page + 1,
-        hasReachedMax: state.page >= tvOnAirModel.totalPages!,
+      ));
+    } else {
+      final FailedRequestModel failedRequestModel = responseModel.decodedResponse!;
+      emit(state.copyWith(
+        tvViewState: TvViewStatus.error,
+        message: 'Error ${failedRequestModel.statusCode} : ${failedRequestModel.statusMessage}',
+      ));
+    }
+  }
+
+  _mapGetTvPopularToState(GetTvPopular event, Emitter<TvState> emit) async {
+    if (event.isRefresh) {
+      emit(state.copyWith(
+        listPopular: <Results>[],
+      ));
+    }
+
+    if (state.hasReachedMax) return;
+
+    TvRepository tvRepository = TvRepository();
+    final ResponseModel responseModel = await tvRepository.getTvPopular(
+      page: state.page,
+    );
+    if (responseModel.response?.statusCode == 200) {
+      final TvOnAirModel tvOnAirModel = responseModel.decodedResponse!;
+      if (tvOnAirModel.results!.isEmpty) {
+        emit(state.copyWith(tvViewState: TvViewStatus.empty));
+      }
+      emit(state.copyWith(
+        listPopular: tvOnAirModel.results,
+        tvViewState: TvViewStatus.loaded,
       ));
     } else {
       final FailedRequestModel failedRequestModel = responseModel.decodedResponse!;

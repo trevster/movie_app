@@ -12,3 +12,11 @@ class GetTvOnAir extends TvEvent {
     this.isRefresh = false,
   });
 }
+
+class GetTvPopular extends TvEvent {
+  final bool isRefresh;
+
+  const GetTvPopular({
+    this.isRefresh = false,
+  });
+}

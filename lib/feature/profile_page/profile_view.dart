@@ -33,20 +33,20 @@ class ProfileView extends StatelessWidget {
                const SizedBox(height: 16,),
                 const Divider(),
                 const ListTile(
-                  title: const Text('Trevster'),
-                  subtitle: const Text('Username'),
+                  title: Text('Trevster'),
+                  subtitle: Text('Username'),
                 ),
                 const ListTile(
                   title: Text('Trevin John Rutherford'),
-                  subtitle: const Text('Name'),
+                  subtitle: Text('Name'),
                 ),
                 const ListTile(
                   title: Text('trevin.john.rutherford@gmail.com'),
-                  subtitle: const Text('Email'),
+                  subtitle: Text('Email'),
                 ),
                 const ListTile(
-                  title: const Text('Male'),
-                  subtitle: const Text('Gender'),
+                  title: Text('Male'),
+                  subtitle: Text('Gender'),
                 ),
                 const Divider(),
                 const ListTile(
@@ -54,12 +54,12 @@ class ProfileView extends StatelessWidget {
                   subtitle: Text('Default Language'),
                 ),
                 const ListTile(
-                  title: const Text('United States'),
+                  title: Text('United States'),
                   subtitle: Text('Country'),
                 ),
                 const ListTile(
-                  title: const Text('Asia - Jakarta'),
-                  subtitle: const Text('Timezone'),
+                  title: Text('Asia - Jakarta'),
+                  subtitle: Text('Timezone'),
                 ),
               ],
             ),

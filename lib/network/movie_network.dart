@@ -89,6 +89,15 @@ class MovieNetwork {
     );
   }
 
+  static Uri tvPopular(int page) {
+    return _buildPath(
+      paths: [_path3, _pathTv, _pathPopular],
+      queryParameters: buildQueryParameters({
+        'page': '$page',
+      }),
+    );
+  }
+
   static Uri tvDetailsWithReviews(String tvId,{List<String>? appendToResponse}) {
     return _buildPath(
       paths: [_path3, _pathTv, tvId],
