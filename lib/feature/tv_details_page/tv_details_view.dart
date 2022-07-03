@@ -45,19 +45,30 @@ class TvDetailsView extends StatelessWidget {
                 imagePath: tv.posterPath!,
                 overview: tv.overview!,
               ),
+              const SliverToBoxAdapter(child: Divider()),
+              const SliverToBoxAdapter(child: Padding(
+                padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: Text('Reviews:', style: TextStyle(fontWeight: FontWeight.w500),),
+              )),
               if (state.tvDetailStatus == TvDetailStatus.loading)
-                const SliverToBoxAdapter(
-                  child: Center(child: Text('Loading')),
+                const SliverPadding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  sliver: SliverToBoxAdapter(
+                    child: Center(child: Text('Loading reviews...')),
+                  ),
                 ),
-              if (state.tvDetailStatus == TvDetailStatus.empty)
-                const SliverToBoxAdapter(
-                  child: Center(child: Text('Empty')),
+              if (state.tvDetailStatus == TvDetailStatus.loaded && state.reviews!.results!.isEmpty)
+                const SliverPadding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  sliver: SliverToBoxAdapter(
+                    child: Center(child: Text('No Reviews')),
+                  ),
                 ),
               if (state.reviews != null)
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     childCount: state.reviews!.results!.length,
-                    (BuildContext context, int index) {
+                        (BuildContext context, int index) {
                       return ListTile(
                         title: Text(state.reviews!.results![index].author!),
                         subtitle: Text(state.reviews!.results![index].content!),
@@ -65,6 +76,7 @@ class TvDetailsView extends StatelessWidget {
                     },
                   ),
                 ),
+              const SliverToBoxAdapter(child: Divider()),
             ],
           );
         },

@@ -46,19 +46,25 @@ class MovieDetailsView extends StatelessWidget {
                 imagePath: movie.posterPath!,
                 overview: movie.overview!,
               ),
-              if (state.movieDetailStatus == MovieDetailStatus.loading)
-                const SliverToBoxAdapter(
-                  child: Center(child: Text('Loading')),
-                ),
-              if (state.movieDetailStatus == MovieDetailStatus.empty)
-                const SliverToBoxAdapter(
-                  child: Center(child: Text('Empty')),
-                ),
               const SliverToBoxAdapter(child: Divider()),
               const SliverToBoxAdapter(child: Padding(
                 padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
                 child: Text('Reviews:', style: TextStyle(fontWeight: FontWeight.w500),),
               )),
+              if (state.movieDetailStatus == MovieDetailStatus.loading)
+                const SliverPadding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  sliver: SliverToBoxAdapter(
+                    child: Center(child: Text('Loading reviews...')),
+                  ),
+                ),
+              if (state.movieDetailStatus == MovieDetailStatus.loaded && state.reviews!.results!.isEmpty)
+                const SliverPadding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  sliver: SliverToBoxAdapter(
+                    child: Center(child: Text('No Reviews')),
+                  ),
+                ),
               if (state.reviews != null)
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
