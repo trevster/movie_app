@@ -31,6 +31,56 @@ class MovieRepository {
     );
   }
 
+  Future<ResponseModel> getUpcoming({
+    required int page,
+  }) async {
+    final client = RetryClient(Client());
+    Response response;
+    dynamic decodedResponse;
+    try {
+      final url = MovieNetwork.movieUpcoming(page);
+      response = await client.get(url);
+      decodedResponse = MovieNetwork.decodeResponse(response.bodyBytes);
+    } finally {
+      client.close();
+    }
+    if(response.statusCode != 200) {
+      return ResponseModel<FailedRequestModel>(
+        decodedResponse: FailedRequestModel.fromJson(decodedResponse),
+        response: response,
+      );
+    }
+    return ResponseModel<NowPlayingModel>(
+      decodedResponse: NowPlayingModel.fromJson(decodedResponse),
+      response: response,
+    );
+  }
+
+  Future<ResponseModel> getPopular({
+    required int page,
+  }) async {
+    final client = RetryClient(Client());
+    Response response;
+    dynamic decodedResponse;
+    try {
+      final url = MovieNetwork.moviePopular(page);
+      response = await client.get(url);
+      decodedResponse = MovieNetwork.decodeResponse(response.bodyBytes);
+    } finally {
+      client.close();
+    }
+    if(response.statusCode != 200) {
+      return ResponseModel<FailedRequestModel>(
+        decodedResponse: FailedRequestModel.fromJson(decodedResponse),
+        response: response,
+      );
+    }
+    return ResponseModel<NowPlayingModel>(
+      decodedResponse: NowPlayingModel.fromJson(decodedResponse),
+      response: response,
+    );
+  }
+
   Future<ResponseModel> getMovieDetailWithReviews({
     required int movieId,
   }) async {

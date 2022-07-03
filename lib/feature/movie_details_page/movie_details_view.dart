@@ -122,9 +122,11 @@ class MovieDetailsView extends StatelessWidget {
                           Expanded(
                             child: Column(
                               children: <Widget>[
-                                Text(movie.title!),
-                                Text(movie.voteAverage!.toString()),
-                                Text('Votes ${movie.voteCount!}'),
+                                Text(movie.title!, textAlign: TextAlign.center,),
+                                const SizedBox(height: 5,),
+                                Text('${movie.voteAverage!.toString()} / 10'),
+                                const SizedBox(height: 5,),
+                                Text('${movie.voteCount!} votes'),
                               ],
                             ),
                           )

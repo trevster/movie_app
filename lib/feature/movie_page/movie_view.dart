@@ -9,7 +9,10 @@ class MovieView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MovieBloc movieBloc = MovieBloc()..add(const GetNowPlaying());
+    final MovieBloc movieBloc = MovieBloc()
+      ..add(const GetNowPlaying())
+      ..add(const GetUpcoming())
+      ..add(const GetPopular());
 
     return MovieScaffold(
       appBar: AppBar(
@@ -37,15 +40,55 @@ class MovieView extends StatelessWidget {
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    childCount: state.listResult.length,
+                    childCount: state.listNowPlaying.length,
                     (BuildContext context, int index) {
                       return ListTile(
-                        leading: Image.network(state.listResult[index].posterPath!),
-                        title: Text('${state.listResult[index].title}'),
-                        subtitle: Text('${state.listResult[index].voteAverage} / 10'),
+                        leading: Image.network(state.listNowPlaying[index].posterPath!),
+                        title: Text('${state.listNowPlaying[index].title}'),
+                        subtitle: Text('${state.listNowPlaying[index].voteAverage} / 10'),
                         onTap: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (_) => MovieDetailsView(movie: state.listResult[index])));
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => MovieDetailsView(movie: state.listNowPlaying[index])));
+                        },
+                      );
+                    },
+                  ),
+                ),
+                SliverPersistentHeader(
+                  delegate: SliverMovieHeader(text: 'Upcoming'),
+                  pinned: true,
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: state.listUpcoming.length,
+                    (BuildContext context, int index) {
+                      return ListTile(
+                        leading: Image.network(state.listUpcoming[index].posterPath!),
+                        title: Text('${state.listUpcoming[index].title}'),
+                        subtitle: Text('${state.listUpcoming[index].releaseDate}'),
+                        onTap: () {
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => MovieDetailsView(movie: state.listUpcoming[index])));
+                        },
+                      );
+                    },
+                  ),
+                ),
+                SliverPersistentHeader(
+                  delegate: SliverMovieHeader(text: 'Popular'),
+                  pinned: true,
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: state.listPopular.length,
+                    (BuildContext context, int index) {
+                      return ListTile(
+                        leading: Image.network(state.listPopular[index].posterPath!),
+                        title: Text('${state.listPopular[index].title}'),
+                        subtitle: Text('${state.listPopular[index].popularity}'),
+                        onTap: () {
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => MovieDetailsView(movie: state.listPopular[index])));
                         },
                       );
                     },
@@ -61,34 +104,34 @@ class MovieView extends StatelessWidget {
 }
 
 class SliverMovieHeader extends SliverPersistentHeaderDelegate {
-  final Widget? child;
+  final String? text;
 
-  SliverMovieHeader({this.child});
+  SliverMovieHeader({this.text});
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return child ??
-        Container(
-          padding: const EdgeInsets.all(25),
-          height: 70,
-          width: double.infinity,
-          color: Colors.lightBlue,
-          child: const Text(
-            'Now Playing',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+    return Container(
+      height: 70,
+      width: double.infinity,
+      color: Colors.lightBlue,
+      child: Center(
+        child: Text(
+          text ?? 'Now Playing',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
           ),
-        );
+        ),
+      ),
+    );
   }
 
   @override
-  double get maxExtent => 70;
+  double get maxExtent => kToolbarHeight;
 
   @override
-  double get minExtent => 70;
+  double get minExtent => kToolbarHeight;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

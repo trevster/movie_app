@@ -14,6 +14,8 @@ class MovieNetwork {
 
   static const _pathMovie = 'movie';
   static const _pathNowPlaying = 'now_playing';
+  static const _pathUpcoming = 'upcoming';
+  static const _pathPopular = 'popular';
 
   static const _pathTv = 'tv';
   static const _pathOnTheAir = 'on_the_air';
@@ -44,6 +46,23 @@ class MovieNetwork {
   static Uri movieNowPlaying(int page) {
     return _buildPath(
       paths: [_path3, _pathMovie, _pathNowPlaying],
+      queryParameters: buildQueryParameters({
+        'page': '$page',
+      }),
+    );
+  }
+
+  static Uri movieUpcoming(int page) {
+    return _buildPath(
+      paths: [_path3, _pathMovie, _pathUpcoming],
+      queryParameters: buildQueryParameters({
+        'page': '$page',
+      }),
+    );
+  }
+  static Uri moviePopular(int page) {
+    return _buildPath(
+      paths: [_path3, _pathMovie, _pathPopular],
       queryParameters: buildQueryParameters({
         'page': '$page',
       }),
