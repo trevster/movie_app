@@ -13,6 +13,7 @@ class MovieBottomNavBar extends StatelessWidget{
   Widget build(BuildContext context) {
     kDeviceLogicalWidth = MediaQuery.of(context).size.width;
     kDeviceLogicalHeight = MediaQuery.of(context).size.height;
+    kDevicePadding = MediaQuery.of(context).padding;
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[

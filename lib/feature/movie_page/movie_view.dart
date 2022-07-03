@@ -28,28 +28,31 @@ class MovieView extends StatelessWidget {
         builder: (BuildContext context, MovieState state) {
           if (state.movieViewState == MovieViewState.loading) return const Center(child: Text('Loading...'));
           if (state.movieViewState == MovieViewState.empty) return const Center(child: Text('Results are empty'));
-          return CustomScrollView(
-            slivers: <Widget>[
-              SliverPersistentHeader(
-                delegate: SliverMovieHeader(),
-                pinned: true,
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  childCount: state.listResult.length,
-                  (BuildContext context, int index) {
-                    return ListTile(
-                      leading: Image.network(state.listResult[index].posterPath!),
-                      title: Text('${state.listResult[index].title}'),
-                      onTap: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (_) => MovieDetailsView(movie: state.listResult[index])));
-                      },
-                    );
-                  },
+          return SafeArea(
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverPersistentHeader(
+                  delegate: SliverMovieHeader(),
+                  pinned: true,
                 ),
-              ),
-            ],
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: state.listResult.length,
+                    (BuildContext context, int index) {
+                      return ListTile(
+                        leading: Image.network(state.listResult[index].posterPath!),
+                        title: Text('${state.listResult[index].title}'),
+                        subtitle: Text('${state.listResult[index].voteAverage} / 10'),
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (_) => MovieDetailsView(movie: state.listResult[index])));
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),

@@ -232,7 +232,13 @@ Results copyWith({  String? posterPath,
   String? get originalTitle => _originalTitle;
   String? get originalLanguage => _originalLanguage;
   String? get title => _title;
-  String? get backdropPath => _backdropPath;
+  String? get backdropPath {
+    return Uri(
+      scheme: MovieNetwork.https,
+      host: MovieNetwork.imageHost,
+      pathSegments: ['t','p','w500',_posterPath!],
+    ).toString();
+  }
   double? get popularity => _popularity;
   int? get voteCount => _voteCount;
   bool? get video => _video;
